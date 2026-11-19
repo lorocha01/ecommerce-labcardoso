@@ -36,6 +36,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon'
 import { ProductCard } from '@/components/product/ProductCard'
 import { TONES } from '@/components/product/ProductArt'
+import { InlineVideoFeature } from '@/components/video/VideoShowcase'
 import { cn, telLink, whatsappLink } from '@/lib/utils'
 
 /* ───────────────────────────── Faixa de confiança */
@@ -264,6 +265,7 @@ export function ExamJourney() {
               <Link to="/faq" className="link mt-6 inline-flex items-center gap-1.5">
                 Ver dúvidas sobre preparo <ArrowRight className="h-4 w-4" />
               </Link>
+              <InlineVideoFeature placement="journey" label="Assista antes de ir" className="mt-8 max-w-md" />
             </Reveal>
             <ol className="grid gap-4 sm:grid-cols-2">
               {steps.map(({ icon: Icon, title, text }, i) => (

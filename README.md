@@ -56,6 +56,26 @@ src/
 └── pages/           páginas da loja e pages/admin/*
 ```
 
+## Vídeos (reels do Instagram)
+
+Os vídeos aparecem em três pontos da narrativa, definidos em `src/data/videos.ts` (`placements`):
+
+| Local | Onde aparece | Conteúdo ideal |
+|---|---|---|
+| `home` | Galeria **"Por dentro do Cardoso"**, logo após "Por que o Cardoso" | estrutura, equipe, atendimento |
+| `journey` | Destaque **"Assista antes de ir"** em "Etapas para realizar seus exames" | coleta, preparo, jejum |
+| `about` | Galeria **"Estrutura em vídeo"** na página Sobre | estrutura, história, empresas |
+
+Seções sem vídeos não são exibidas. Para adicionar:
+
+```bash
+# 1. copie os vídeos originais (mp4/mov) para media/videos/  (pasta fora do git)
+npm run videos   # 2. gera public/videos/<id>.mp4, <id>-preview.mp4 e <id>.webp
+# 3. cole o trecho impresso em src/data/videos.ts e preencha título, descrição, tema e placements
+```
+
+O script (requer `ffmpeg`) converte para H.264 até 720p com *faststart*, cria uma prévia muda de 4 s para o hover e escolhe a thumbnail automaticamente. Na página, só as thumbnails são baixadas; a prévia carrega no hover (desktop) e o vídeo completo apenas quando o visitante abre o player.
+
 ## Integração loja ↔ painel
 
 Loja e painel leem e escrevem no **mesmo store** (`src/store/index.ts`):

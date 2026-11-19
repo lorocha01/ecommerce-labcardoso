@@ -6,6 +6,7 @@ import { Reveal } from '@/components/ui/Reveal'
 import { buttonClass } from '@/components/ui/Button'
 import { PixelSquares } from '@/components/ui/PixelSquares'
 import { LocationSection } from '@/components/home/Sections'
+import { VideoShowcase } from '@/components/video/VideoShowcase'
 import { useDocumentTitle } from '@/lib/useDocumentTitle'
 
 export default function About() {
@@ -55,6 +56,14 @@ export default function About() {
           </Reveal>
         </div>
       </section>
+
+      <VideoShowcase
+        placement="about"
+        eyebrow="Estrutura em vídeo"
+        title={<>Tradição e tecnologia, <em className="italic text-brand-600">em movimento.</em></>}
+        description="Um olhar por dentro do laboratório: as pessoas, os processos e o cuidado que sustentam nossa história."
+        className="border-t border-ink-100 lg:py-24"
+      />
 
       <section className="bg-white py-16 lg:py-24">
         <div className="container grid gap-6 md:grid-cols-2">
