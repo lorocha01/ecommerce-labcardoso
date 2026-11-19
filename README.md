@@ -63,7 +63,8 @@ Os vídeos aparecem em três pontos da narrativa, definidos em `src/data/videos.
 | Local | Onde aparece | Conteúdo ideal |
 |---|---|---|
 | `home` | Galeria **"Por dentro do Cardoso"**, logo após "Por que o Cardoso" | estrutura, equipe, atendimento |
-| `journey` | Destaque **"Assista antes de ir"** em "Etapas para realizar seus exames" | coleta, preparo, jejum |
+| `journey` | Destaque **"Também atendemos pelo SUS"** em "Etapas para realizar seus exames" | coleta, preparo, jejum |
+| `insurance` | Destaque dentro do card **"Faça exames pelo seu convênio"** | convênios |
 | `about` | Galeria **"Estrutura em vídeo"** na página Sobre | estrutura, história, empresas |
 
 Seções sem vídeos não são exibidas. Para adicionar:

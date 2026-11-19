@@ -58,7 +58,7 @@ export function VideoShowcase({ placement, eyebrow, title, description, classNam
             {all.length} {all.length === 1 ? 'vídeo' : 'vídeos'} · {formatDuration(totalSeconds)} de conteúdo
           </div>
 
-          {topics.length > 1 && (
+          {topics.length > 1 && all.length >= 4 && (
             <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Filtrar vídeos por tema">
               {(['all', ...topics] as const).map((t) => (
                 <button
@@ -127,6 +127,8 @@ function VideoRail({ videos, onOpen }: { videos: LabVideo[]; onOpen: (i: number)
     if (el) el.scrollBy({ left: d * el.clientWidth * 0.85, behavior: 'smooth' })
   }
   const scrollable = state.prev || state.next
+  // Poucos vídeos: no desktop, cartões maiores e escalonados em vez de trilho.
+  const few = videos.length <= 2
 
   return (
     <div className="relative min-w-0">
@@ -135,13 +137,14 @@ function VideoRail({ videos, onOpen }: { videos: LabVideo[]; onOpen: (i: number)
         onScroll={measure}
         className={cn(
           '-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-2 pt-2 scrollbar-none sm:-mx-6 sm:px-6 lg:mx-0 lg:gap-5 lg:px-0',
+          few && 'lg:justify-center lg:gap-8 lg:overflow-visible lg:pb-16',
           state.next && 'lg:[mask-image:linear-gradient(90deg,#000_82%,transparent)]',
           state.prev && state.next && 'lg:[mask-image:linear-gradient(90deg,transparent,#000_8%,#000_82%,transparent)]',
           state.prev && !state.next && 'lg:[mask-image:linear-gradient(90deg,transparent,#000_8%)]',
         )}
       >
         {videos.map((v, i) => (
-          <Reveal key={v.id} delay={Math.min(i, 4) * 0.07} className="w-[62%] shrink-0 snap-start sm:w-[40%] lg:w-[calc((100%-2.5rem)/3)]">
+          <Reveal key={v.id} delay={Math.min(i, 4) * 0.07} className={cn('w-[62%] shrink-0 snap-start sm:w-[40%]', few ? 'lg:w-[min(300px,calc((100%-2rem)/2))]' : 'lg:w-[calc((100%-2.5rem)/3)]', few && i % 2 === 1 && 'lg:mt-16')}>
             <VideoCard video={v} onOpen={() => onOpen(i)} priority={i < 2} />
           </Reveal>
         ))}
@@ -173,17 +176,17 @@ function VideoRail({ videos, onOpen }: { videos: LabVideo[]; onOpen: (i: number)
  * Destaque compacto para encaixar um vídeo dentro de outra seção
  * (ex.: "Etapas para realizar seus exames").
  */
-export function InlineVideoFeature({ placement, label, className }: { placement: VideoPlacement; label: string; className?: string }) {
+export function InlineVideoFeature({ placement, label, tone = 'glass', className }: { placement: VideoPlacement; label?: string; tone?: 'glass' | 'subtle'; className?: string }) {
   const list = useMemo(() => videosFor(placement), [placement])
   const [open, setOpen] = useState<number | null>(null)
   if (!list.length) return null
   const first = list[0]
   return (
     <>
-      <div className={cn('group flex items-center gap-4 rounded-3xl bg-white/85 p-3 pr-5 shadow-soft ring-1 ring-white backdrop-blur transition hover:shadow-card', className)}>
+      <div className={cn('group flex items-center gap-4 rounded-3xl p-3 pr-5 transition', tone === 'glass' ? 'bg-white/85 shadow-soft ring-1 ring-white backdrop-blur hover:shadow-card' : 'bg-canvas ring-1 ring-inset ring-ink-100 hover:bg-peach-50 hover:ring-peach-200', className)}>
         <VideoCard video={first} onOpen={() => setOpen(0)} size="sm" className="w-[84px] shrink-0 sm:w-24" />
         <button type="button" onClick={() => setOpen(0)} className="min-w-0 text-left">
-          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-700">{label}</span>
+          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-700">{label ?? `Assista · ${VIDEO_TOPICS[first.topic]}`}</span>
           <span className="mt-1 block text-balance font-bold leading-snug text-ink-900">{first.title}</span>
           <span className="mt-1.5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink-500 transition group-hover:text-brand-700">
             <Play className="h-3.5 w-3.5 fill-current" /> {formatDuration(first.duration)}

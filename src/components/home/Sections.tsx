@@ -265,7 +265,7 @@ export function ExamJourney() {
               <Link to="/faq" className="link mt-6 inline-flex items-center gap-1.5">
                 Ver dúvidas sobre preparo <ArrowRight className="h-4 w-4" />
               </Link>
-              <InlineVideoFeature placement="journey" label="Assista antes de ir" className="mt-8 max-w-md" />
+              <InlineVideoFeature placement="journey" label="Também atendemos pelo SUS" className="mt-8 max-w-md" />
             </Reveal>
             <ol className="grid gap-4 sm:grid-cols-2">
               {steps.map(({ icon: Icon, title, text }, i) => (
@@ -322,6 +322,7 @@ export function CompaniesAndInsurances() {
               </span>
             ))}
           </div>
+          <InlineVideoFeature placement="insurance" tone="subtle" className="mt-7" />
         </Reveal>
       </div>
     </section>

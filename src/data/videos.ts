@@ -13,12 +13,13 @@
  * Onde cada vídeo aparece:
  *  - 'home'    → galeria "Por dentro do Cardoso", logo após "Por que o Cardoso"
  *  - 'journey' → destaque dentro de "Etapas para realizar seus exames" (ideal: coleta/preparo)
+ *  - 'insurance' → destaque dentro do card "Faça exames pelo seu convênio"
  *  - 'about'   → galeria "Estrutura em vídeo" na página Sobre
  * Seções sem vídeos simplesmente não são exibidas.
  */
 
-export type VideoTopic = 'estrutura' | 'coleta' | 'preparo' | 'equipe' | 'empresas' | 'saude'
-export type VideoPlacement = 'home' | 'journey' | 'about'
+export type VideoTopic = 'estrutura' | 'coleta' | 'convenios' | 'preparo' | 'equipe' | 'empresas' | 'saude'
+export type VideoPlacement = 'home' | 'journey' | 'insurance' | 'about'
 
 export interface LabVideo {
   id: string
@@ -41,6 +42,7 @@ export interface LabVideo {
 export const VIDEO_TOPICS: Record<VideoTopic, string> = {
   estrutura: 'Estrutura',
   coleta: 'Coleta',
+  convenios: 'Convênios',
   preparo: 'Preparo',
   equipe: 'Equipe',
   empresas: 'Empresas',
@@ -48,19 +50,28 @@ export const VIDEO_TOPICS: Record<VideoTopic, string> = {
 }
 
 export const videos: LabVideo[] = [
-  // Exemplo:
-  // {
-  //   id: 'estrutura',
-  //   title: 'Conheça nossa estrutura',
-  //   description: 'Um passeio pelas instalações onde seus exames são analisados com cuidado e tecnologia.',
-  //   topic: 'estrutura',
-  //   src: '/videos/estrutura.mp4',
-  //   poster: '/videos/estrutura.webp',
-  //   preview: '/videos/estrutura-preview.mp4',
-  //   duration: 42,
-  //   instagramUrl: 'https://www.instagram.com/reel/XXXXXXXXXXX/',
-  //   placements: ['home', 'about'],
-  // },
+  {
+    id: 'convenios',
+    title: 'Atendemos o seu convênio',
+    description: 'Unimed Franca, Unimed Norte Paulista, Hapvida e outros convênios — com mais de 50 anos de credibilidade em Pedregulho e região, preços justos e o melhor atendimento.',
+    topic: 'convenios',
+    src: '/videos/convenios.mp4',
+    poster: '/videos/convenios.webp',
+    preview: '/videos/convenios-preview.mp4',
+    duration: 26,
+    placements: ['home', 'insurance', 'about'],
+  },
+  {
+    id: 'coleta-pelo-sus',
+    title: 'Coleta pelo SUS nos postos de saúde',
+    description: 'A Aline conta como funciona: além dos convênios, também atendemos pelo SUS, com coletas nos postos de saúde às 7h, em dias definidos para cada unidade.',
+    topic: 'coleta',
+    src: '/videos/coleta-pelo-sus.mp4',
+    poster: '/videos/coleta-pelo-sus.webp',
+    preview: '/videos/coleta-pelo-sus-preview.mp4',
+    duration: 60,
+    placements: ['home', 'journey'],
+  },
 ]
 
 export const videosFor = (placement: VideoPlacement) => videos.filter((v) => v.placements.includes(placement))
