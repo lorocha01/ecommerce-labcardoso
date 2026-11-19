@@ -138,7 +138,6 @@ export function Header() {
     setMega(false)
   }, [location.pathname])
 
-  const wa = whatsappLink(settings.whatsapp, `Olá! Vim pelo site do ${settings.storeName} e gostaria de informações sobre exames.`)
 
   return (
     <>
@@ -156,9 +155,20 @@ export function Header() {
               <button type="button" onClick={() => setSearchOpen(true)} className="grid h-11 w-11 place-items-center rounded-xl text-ink-800 hover:bg-ink-100 lg:hidden" aria-label="Buscar exames">
                 <Search className="h-[22px] w-[22px]" strokeWidth={1.8} />
               </button>
-              <a href={wa} target="_blank" rel="noopener noreferrer" className="hidden h-11 items-center gap-2 rounded-xl px-3.5 text-[13px] font-semibold text-[#128C4B] ring-1 ring-inset ring-[#25D366]/30 transition hover:bg-[#25D366]/10 xl:inline-flex">
-                <WhatsAppIcon className="h-[18px] w-[18px]" /> WhatsApp
-              </a>
+              {/* Acesso destacado aos resultados (o WhatsApp segue no botão flutuante) */}
+              <NavLink
+                to={RESULTS_PATH}
+                className={({ isActive }) =>
+                  cn(
+                    'hidden h-11 items-center gap-2 rounded-xl px-3.5 text-[13.5px] font-semibold ring-1 ring-inset transition-all duration-200 active:scale-[0.97] lg:inline-flex',
+                    isActive ? 'bg-brand-600 text-white ring-brand-600 shadow-brand' : 'bg-brand-50 text-brand-700 ring-brand-100 hover:bg-brand-600 hover:text-white hover:shadow-brand hover:ring-brand-600',
+                  )
+                }
+              >
+                <FileCheck2 className="h-[18px] w-[18px]" strokeWidth={2} />
+                <span className="xl:hidden">Resultados</span>
+                <span className="hidden xl:inline">Resultados de Exames</span>
+              </NavLink>
               <Link to="/minha-conta" className="hidden h-11 items-center gap-2.5 rounded-xl px-3 text-ink-800 transition hover:bg-ink-100 md:inline-flex">
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-ink-100 text-ink-700">
                   {user ? <span className="text-xs font-bold">{user.name.charAt(0)}</span> : <User className="h-4 w-4" />}
@@ -180,23 +190,20 @@ export function Header() {
         <nav className="relative hidden border-t border-ink-100/80 lg:block" aria-label="Principal">
           <div className="container flex h-12 items-center justify-between">
             <ul className="flex items-center gap-1">
-              {NAV.map((item) => (
+              {NAV.filter((item) => !item.highlight).map((item) => (
                 <li key={item.to} onMouseEnter={() => setMega(!!item.mega)}>
                   <NavLink
                     to={item.to}
                     end={item.end}
                     className={({ isActive }) =>
-                      item.highlight
-                        ? cn('mx-1.5 inline-flex h-9 items-center gap-2 rounded-full px-3.5 text-[13.5px] font-semibold ring-1 ring-inset transition-all', isActive ? 'bg-brand-600 text-white ring-brand-600 shadow-brand' : 'bg-brand-50 text-brand-700 ring-brand-100 hover:bg-brand-600 hover:text-white hover:ring-brand-600')
-                        : cn('relative inline-flex h-12 items-center gap-1 px-3.5 text-[14px] font-medium transition-colors', isActive ? 'text-brand-700' : 'text-ink-600 hover:text-ink-900')
+                      cn('relative inline-flex h-12 items-center gap-1 px-3.5 text-[14px] font-medium transition-colors', isActive ? 'text-brand-700' : 'text-ink-600 hover:text-ink-900')
                     }
                   >
                     {({ isActive }) => (
                       <>
-                        {item.highlight && <FileCheck2 className="h-4 w-4" strokeWidth={2} />}
                         {item.label}
                         {item.mega && <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', mega && 'rotate-180')} />}
-                        {isActive && !item.highlight && <motion.span layoutId="nav-underline" className="absolute inset-x-3.5 -bottom-px h-0.5 rounded-full bg-brand-600" />}
+                        {isActive && <motion.span layoutId="nav-underline" className="absolute inset-x-3.5 -bottom-px h-0.5 rounded-full bg-brand-600" />}
                       </>
                     )}
                   </NavLink>
