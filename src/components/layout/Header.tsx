@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, ChevronDown, FileCheck2, Heart, Menu, Phone, Search, ShoppingBag, User, X } from 'lucide-react'
+import { ArrowRight, FileCheck2, Heart, Menu, Phone, Search, ShoppingBag, User, X } from 'lucide-react'
 import { useStore } from '@/store'
-import { useCart, useCurrentUser, usePublicCategories, usePublicProducts } from '@/store/hooks'
+import { useCart, useCurrentUser, usePublicCategories } from '@/store/hooks'
 import { Logo } from '@/components/ui/Logo'
 import { DynamicIcon } from '@/components/ui/Icon'
 import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon'
@@ -12,10 +12,10 @@ import { cn, telLink, whatsappLink } from '@/lib/utils'
 import { RESULTS_PATH, SHOP_PATH, checkupsFirst, shopCategoryName, shopUrl } from '@/lib/routes'
 import { SearchBox } from './SearchBox'
 
-type NavItem = { to: string; label: string; end?: boolean; mega?: boolean; highlight?: boolean }
+type NavItem = { to: string; label: string; end?: boolean; highlight?: boolean }
 const NAV: NavItem[] = [
   { to: '/', label: 'Início', end: true },
-  { to: SHOP_PATH, label: 'Comprar Exames', mega: true },
+  { to: SHOP_PATH, label: 'Comprar Exames' },
   { to: RESULTS_PATH, label: 'Resultados de Exames', highlight: true },
   { to: '/sobre', label: 'O laboratório' },
   { to: '/faq', label: 'Dúvidas' },
@@ -68,53 +68,6 @@ function CartLink({ className }: { className?: string }) {
   )
 }
 
-function MegaMenu({ onClose }: { onClose: () => void }) {
-  const categories = usePublicCategories()
-  const products = usePublicProducts()
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -6 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -6 }}
-      transition={{ duration: 0.18 }}
-      className="absolute left-0 right-0 top-full z-40 border-b border-ink-100 bg-white shadow-lift"
-      onMouseLeave={onClose}
-    >
-      <div className="container grid grid-cols-12 gap-8 py-8">
-        <div className="col-span-8">
-          <div className="mb-3 flex items-center justify-between px-3">
-            <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink-400">Categorias</span>
-            <Link to={SHOP_PATH} onClick={onClose} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-700 hover:text-brand-800">
-              Todos os exames e check-ups ({products.length}) <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-          {checkupsFirst(categories).map((c) => (
-            <Link key={c.id} to={shopUrl(c.slug)} onClick={onClose} className="group flex items-start gap-3 rounded-2xl p-3 transition hover:bg-ink-50">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-600 group-hover:text-white">
-                <DynamicIcon name={c.icon} className="h-5 w-5" />
-              </span>
-              <span>
-                <span className="block text-[14px] font-semibold text-ink-900">{shopCategoryName(c)}</span>
-                <span className="text-xs text-ink-500">{products.filter((p) => p.categoryId === c.id).length} exames</span>
-              </span>
-            </Link>
-          ))}
-          </div>
-        </div>
-        <div className="col-span-4 overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 to-brand-900 p-6 text-white">
-          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-peach-200">Check-ups e pacotes</span>
-          <p className="display mt-2 text-2xl leading-tight">Sua rotina de exames em um só pedido.</p>
-          <p className="mt-2 text-sm text-brand-100">Combinações práticas para acompanhar a saúde com o seu médico.</p>
-          <Link to={shopUrl('check-ups')} onClick={onClose} className="mt-5 inline-flex h-10 items-center rounded-xl bg-white px-4 text-sm font-semibold text-brand-700 transition hover:bg-peach-50">
-            Ver check-ups
-          </Link>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
 export function Header() {
   const settings = useStore((s) => s.settings)
   const user = useCurrentUser()
@@ -122,7 +75,6 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [mega, setMega] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -135,7 +87,6 @@ export function Header() {
   useEffect(() => {
     setMenuOpen(false)
     setSearchOpen(false)
-    setMega(false)
   }, [location.pathname])
 
 
@@ -188,7 +139,7 @@ export function Header() {
           <div className="container flex h-12 items-center justify-between">
             <ul className="flex items-center gap-1">
               {NAV.filter((item) => !item.highlight).map((item) => (
-                <li key={item.to} onMouseEnter={() => setMega(!!item.mega)}>
+                <li key={item.to}>
                   <NavLink
                     to={item.to}
                     end={item.end}
@@ -199,7 +150,6 @@ export function Header() {
                     {({ isActive }) => (
                       <>
                         {item.label}
-                        {item.mega && <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', mega && 'rotate-180')} />}
                         {isActive && <motion.span layoutId="nav-underline" className="absolute inset-x-3.5 -bottom-px h-0.5 rounded-full bg-brand-600" />}
                       </>
                     )}
@@ -217,7 +167,6 @@ export function Header() {
               </span>
             </div>
           </div>
-          <AnimatePresence>{mega && <MegaMenu onClose={() => setMega(false)} />}</AnimatePresence>
         </nav>
       </header>
 
