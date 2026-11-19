@@ -149,8 +149,6 @@ export function Header() {
             </button>
             <Logo className={cn('transition-all duration-300', scrolled ? 'h-9' : 'h-10 lg:h-12')} />
 
-            <SearchBox className="hidden max-w-xl flex-1 lg:block" />
-
             <div className="ml-auto flex items-center gap-1 sm:gap-1.5">
               <button type="button" onClick={() => setSearchOpen(true)} className="grid h-11 w-11 place-items-center rounded-xl text-ink-800 hover:bg-ink-100 lg:hidden" aria-label="Buscar exames">
                 <Search className="h-[22px] w-[22px]" strokeWidth={1.8} />
@@ -166,8 +164,7 @@ export function Header() {
                 }
               >
                 <FileCheck2 className="h-[18px] w-[18px]" strokeWidth={2} />
-                <span className="xl:hidden">Resultados</span>
-                <span className="hidden xl:inline">Resultados de Exames</span>
+                Resultados de Exames
               </NavLink>
               <Link to="/minha-conta" className="hidden h-11 items-center gap-2.5 rounded-xl px-3 text-ink-800 transition hover:bg-ink-100 md:inline-flex">
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-ink-100 text-ink-700">
