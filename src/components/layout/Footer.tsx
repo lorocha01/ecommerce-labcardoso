@@ -6,6 +6,7 @@ import { Logo } from '@/components/ui/Logo'
 import { PixelSquares } from '@/components/ui/PixelSquares'
 import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon'
 import { telLink, whatsappLink } from '@/lib/utils'
+import { RESULTS_PATH, checkupsFirst, shopCategoryName, shopUrl } from '@/lib/routes'
 
 export function Footer() {
   const s = useStore((st) => st.settings)
@@ -54,18 +55,18 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-white">Exames</h3>
+            <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-white">Comprar exames</h3>
             <ul className="space-y-2.5 text-sm">
-              {categories.slice(0, 7).map((c) => (
+              {checkupsFirst(categories).slice(0, 7).map((c) => (
                 <li key={c.id}>
-                  <Link to={`/categorias/${c.slug}`} className="transition hover:text-white">
-                    {c.name}
+                  <Link to={shopUrl(c.slug)} className="transition hover:text-white">
+                    {shopCategoryName(c)}
                   </Link>
                 </li>
               ))}
               <li>
                 <Link to="/exames" className="inline-flex items-center gap-1 font-semibold text-peach-200 hover:text-white">
-                  Ver todos <ArrowUpRight className="h-3.5 w-3.5" />
+                  Todos os exames <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
               </li>
             </ul>
@@ -75,6 +76,7 @@ export function Footer() {
             <h3 className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-white">Institucional</h3>
             <ul className="space-y-2.5 text-sm">
               {[
+                [RESULTS_PATH, 'Resultados de exames'],
                 ['/sobre', 'Sobre o laboratório'],
                 ['/contato', 'Contato'],
                 ['/faq', 'Perguntas frequentes'],

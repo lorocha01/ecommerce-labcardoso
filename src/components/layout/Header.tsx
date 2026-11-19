@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown, Heart, Menu, Phone, Search, ShoppingBag, User, X } from 'lucide-react'
+import { ArrowRight, ChevronDown, FileCheck2, Heart, Menu, Phone, Search, ShoppingBag, User, X } from 'lucide-react'
 import { useStore } from '@/store'
 import { useCart, useCurrentUser, usePublicCategories, usePublicProducts } from '@/store/hooks'
 import { Logo } from '@/components/ui/Logo'
@@ -9,12 +9,14 @@ import { DynamicIcon } from '@/components/ui/Icon'
 import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon'
 import { Drawer } from '@/components/ui/Modal'
 import { cn, telLink, whatsappLink } from '@/lib/utils'
+import { RESULTS_PATH, SHOP_PATH, checkupsFirst, shopCategoryName, shopUrl } from '@/lib/routes'
 import { SearchBox } from './SearchBox'
 
-const NAV = [
+type NavItem = { to: string; label: string; end?: boolean; mega?: boolean; highlight?: boolean }
+const NAV: NavItem[] = [
   { to: '/', label: 'Início', end: true },
-  { to: '/exames', label: 'Exames', mega: true },
-  { to: '/categorias/check-ups', label: 'Check-ups' },
+  { to: SHOP_PATH, label: 'Comprar Exames', mega: true },
+  { to: RESULTS_PATH, label: 'Resultados de Exames', highlight: true },
   { to: '/sobre', label: 'O laboratório' },
   { to: '/faq', label: 'Dúvidas' },
   { to: '/contato', label: 'Contato' },
@@ -79,24 +81,32 @@ function MegaMenu({ onClose }: { onClose: () => void }) {
       onMouseLeave={onClose}
     >
       <div className="container grid grid-cols-12 gap-8 py-8">
-        <div className="col-span-8 grid grid-cols-3 gap-2">
-          {categories.map((c) => (
-            <Link key={c.id} to={`/categorias/${c.slug}`} onClick={onClose} className="group flex items-start gap-3 rounded-2xl p-3 transition hover:bg-ink-50">
+        <div className="col-span-8">
+          <div className="mb-3 flex items-center justify-between px-3">
+            <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink-400">Categorias</span>
+            <Link to={SHOP_PATH} onClick={onClose} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-700 hover:text-brand-800">
+              Todos os exames e check-ups ({products.length}) <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+          {checkupsFirst(categories).map((c) => (
+            <Link key={c.id} to={shopUrl(c.slug)} onClick={onClose} className="group flex items-start gap-3 rounded-2xl p-3 transition hover:bg-ink-50">
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700 transition group-hover:bg-brand-600 group-hover:text-white">
                 <DynamicIcon name={c.icon} className="h-5 w-5" />
               </span>
               <span>
-                <span className="block text-[14px] font-semibold text-ink-900">{c.name}</span>
+                <span className="block text-[14px] font-semibold text-ink-900">{shopCategoryName(c)}</span>
                 <span className="text-xs text-ink-500">{products.filter((p) => p.categoryId === c.id).length} exames</span>
               </span>
             </Link>
           ))}
+          </div>
         </div>
         <div className="col-span-4 overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 to-brand-900 p-6 text-white">
-          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-peach-200">Check-ups</span>
+          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-peach-200">Check-ups e pacotes</span>
           <p className="display mt-2 text-2xl leading-tight">Sua rotina de exames em um só pedido.</p>
           <p className="mt-2 text-sm text-brand-100">Combinações práticas para acompanhar a saúde com o seu médico.</p>
-          <Link to="/categorias/check-ups" onClick={onClose} className="mt-5 inline-flex h-10 items-center rounded-xl bg-white px-4 text-sm font-semibold text-brand-700 transition hover:bg-peach-50">
+          <Link to={shopUrl('check-ups')} onClick={onClose} className="mt-5 inline-flex h-10 items-center rounded-xl bg-white px-4 text-sm font-semibold text-brand-700 transition hover:bg-peach-50">
             Ver check-ups
           </Link>
         </div>
@@ -176,14 +186,17 @@ export function Header() {
                     to={item.to}
                     end={item.end}
                     className={({ isActive }) =>
-                      cn('relative inline-flex h-12 items-center gap-1 px-3.5 text-[14px] font-medium transition-colors', isActive ? 'text-brand-700' : 'text-ink-600 hover:text-ink-900')
+                      item.highlight
+                        ? cn('mx-1.5 inline-flex h-9 items-center gap-2 rounded-full px-3.5 text-[13.5px] font-semibold ring-1 ring-inset transition-all', isActive ? 'bg-brand-600 text-white ring-brand-600 shadow-brand' : 'bg-brand-50 text-brand-700 ring-brand-100 hover:bg-brand-600 hover:text-white hover:ring-brand-600')
+                        : cn('relative inline-flex h-12 items-center gap-1 px-3.5 text-[14px] font-medium transition-colors', isActive ? 'text-brand-700' : 'text-ink-600 hover:text-ink-900')
                     }
                   >
                     {({ isActive }) => (
                       <>
+                        {item.highlight && <FileCheck2 className="h-4 w-4" strokeWidth={2} />}
                         {item.label}
                         {item.mega && <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', mega && 'rotate-180')} />}
-                        {isActive && <motion.span layoutId="nav-underline" className="absolute inset-x-3.5 -bottom-px h-0.5 rounded-full bg-brand-600" />}
+                        {isActive && !item.highlight && <motion.span layoutId="nav-underline" className="absolute inset-x-3.5 -bottom-px h-0.5 rounded-full bg-brand-600" />}
                       </>
                     )}
                   </NavLink>
@@ -247,11 +260,24 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
           </span>
         </Link>
         <nav className="space-y-0.5">
-          {NAV.map((n) => (
-            <NavLink key={n.to} to={n.to} end={n.end} onClick={onClose} className={({ isActive }) => cn('flex h-12 items-center rounded-xl px-3 text-[15px] font-semibold', isActive ? 'bg-brand-50 text-brand-700' : 'text-ink-800 hover:bg-ink-50')}>
-              {n.label}
-            </NavLink>
-          ))}
+          {NAV.map((n) =>
+            n.highlight ? (
+              <NavLink key={n.to} to={n.to} onClick={onClose} className="my-1.5 flex items-center gap-3 rounded-2xl bg-[#1F0C0D] p-3 text-white">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 shadow-brand">
+                  <FileCheck2 className="h-5 w-5" strokeWidth={1.8} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[15px] font-semibold">{n.label}</span>
+                  <span className="block text-xs text-brand-100/70">Consulta rápida e segura</span>
+                </span>
+                <ArrowRight className="h-4 w-4 text-peach-200" />
+              </NavLink>
+            ) : (
+              <NavLink key={n.to} to={n.to} end={n.end} onClick={onClose} className={({ isActive }) => cn('flex h-12 items-center rounded-xl px-3 text-[15px] font-semibold', isActive ? 'bg-brand-50 text-brand-700' : 'text-ink-800 hover:bg-ink-50')}>
+                {n.label}
+              </NavLink>
+            ),
+          )}
           <NavLink to="/pedidos" onClick={onClose} className={({ isActive }) => cn('flex h-12 items-center rounded-xl px-3 text-[15px] font-semibold', isActive ? 'bg-brand-50 text-brand-700' : 'text-ink-800 hover:bg-ink-50')}>
             Meus pedidos
           </NavLink>
@@ -259,12 +285,12 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
             Favoritos
           </NavLink>
         </nav>
-        <p className="mb-2 mt-6 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-ink-400">Categorias</p>
+        <p className="mb-2 mt-6 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-ink-400">Comprar por categoria</p>
         <div className="grid grid-cols-2 gap-2">
-          {categories.map((c) => (
-            <Link key={c.id} to={`/categorias/${c.slug}`} onClick={onClose} className="flex items-center gap-2 rounded-xl bg-ink-50 p-2.5 text-[13px] font-medium text-ink-800">
+          {checkupsFirst(categories).map((c) => (
+            <Link key={c.id} to={shopUrl(c.slug)} onClick={onClose} className="flex items-center gap-2 rounded-xl bg-ink-50 p-2.5 text-[13px] font-medium text-ink-800">
               <DynamicIcon name={c.icon} className="h-4 w-4 shrink-0 text-brand-600" />
-              <span className="truncate">{c.name}</span>
+              <span className="truncate">{shopCategoryName(c)}</span>
             </Link>
           ))}
         </div>

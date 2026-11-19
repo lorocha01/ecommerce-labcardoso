@@ -65,7 +65,7 @@ export const faq: FaqItem[] = [
   {
     group: 'resultados',
     q: 'Como acesso meus resultados?',
-    a: 'Os resultados são disponibilizados pelos canais oficiais do laboratório. O prazo estimado de cada exame aparece na página do exame. Esta loja demonstrativa não exibe resultados de exames.',
+    a: 'Pelo portal oficial do laboratório: use o botão “Resultados de Exames” no menu do site ou “Acessar meus resultados” na página inicial. O prazo estimado de cada exame aparece na página do exame.',
   },
   {
     group: 'resultados',

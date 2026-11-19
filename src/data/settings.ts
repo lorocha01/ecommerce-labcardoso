@@ -29,6 +29,8 @@ export const settings: StoreSettings = {
     'Desde 1974, o Laboratório Cardoso cuida da saúde das famílias de Pedregulho e região com dedicação e confiança. Do campo até a cidade, atendemos pacientes, fábricas, fazendas e empresas, unindo a tradição de um atendimento próximo à tecnologia das análises clínicas.',
   mission:
     'Cuidar daquilo que realmente importa: a saúde e o bem-estar de cada paciente e de sua família, com a dedicação de sempre.',
+  // Link "Resultados" do site oficial do laboratório
+  resultsUrl: 'https://laboratoriocardoso.uniexames.srv.br/pedidos',
   social: {
     instagram: 'https://www.instagram.com/cardoso.laboratorio/',
     facebook: 'https://www.facebook.com/cardosolab',

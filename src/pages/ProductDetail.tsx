@@ -31,6 +31,7 @@ import { FavoriteButton } from '@/components/product/FavoriteButton'
 import { ProductCard } from '@/components/product/ProductCard'
 import { flyToCart } from '@/components/product/flyToCart'
 import { formatCurrency } from '@/lib/format'
+import { shopCategoryName, shopUrl } from '@/lib/routes'
 import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { cn, whatsappLink } from '@/lib/utils'
 import { MAX_QTY } from '@/store'
@@ -91,7 +92,7 @@ export default function ProductDetail() {
     { icon: Droplets, label: 'Material', value: product.material },
     { icon: FlaskConical, label: 'Preparo', value: product.preparationSummary },
     { icon: Clock, label: 'Prazo estimado', value: product.resultTime },
-    { icon: ClipboardList, label: 'Categoria', value: category?.name ?? '—' },
+    { icon: ClipboardList, label: 'Categoria', value: category ? shopCategoryName(category) : '—' },
   ]
 
   const sections = [
@@ -107,7 +108,7 @@ export default function ProductDetail() {
     <div className="pb-24 lg:pb-0">
       <div className="border-b border-ink-100 bg-white">
         <div className="container py-4">
-          <Breadcrumbs items={[{ label: 'Início', to: '/' }, { label: 'Exames', to: '/exames' }, ...(category ? [{ label: category.name, to: `/categorias/${category.slug}` }] : []), { label: product.name }]} />
+          <Breadcrumbs items={[{ label: 'Início', to: '/' }, { label: 'Comprar exames', to: '/exames' }, ...(category ? [{ label: shopCategoryName(category), to: shopUrl(category.slug) }] : []), { label: product.name }]} />
         </div>
       </div>
 
@@ -133,9 +134,9 @@ export default function ProductDetail() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }} className="lg:sticky lg:top-[150px] lg:self-start">
-            <Link to={category ? `/categorias/${category.slug}` : '/exames'} className="eyebrow hover:text-brand-800">
+            <Link to={shopUrl(category?.slug)} className="eyebrow hover:text-brand-800">
               <span className="h-1.5 w-1.5 rounded-[2px] bg-brand-600" />
-              {category?.name}
+              {category && shopCategoryName(category)}
             </Link>
             <h1 className="display mt-3 text-balance text-[2.2rem] font-medium leading-[1.05] text-ink-900 sm:text-5xl">{product.name}</h1>
             <p className="mt-4 text-pretty text-[16.5px] leading-relaxed text-ink-600">{product.shortDescription}</p>
@@ -248,7 +249,7 @@ export default function ProductDetail() {
           <div className="container">
             <div className="mb-8 flex items-end justify-between gap-4">
               <h2 className="display text-3xl font-medium sm:text-4xl">Exames relacionados</h2>
-              <Link to={category ? `/categorias/${category.slug}` : '/exames'} className="link hidden text-sm sm:inline">
+              <Link to={shopUrl(category?.slug)} className="link hidden text-sm sm:inline">
                 Ver categoria
               </Link>
             </div>

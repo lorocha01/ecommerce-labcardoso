@@ -7,6 +7,7 @@ import { useCategoryMap, usePublicProducts } from '@/store/hooks'
 import { highlightParts, searchProducts } from '@/lib/search'
 import { formatCurrency } from '@/lib/format'
 import { ProductArt } from '@/components/product/ProductArt'
+import { shopUrl } from '@/lib/routes'
 import { cn } from '@/lib/utils'
 
 const POPULAR = ['Hemograma', 'Vitamina D', 'Tireoide', 'Colesterol', 'Glicemia', 'Check-up']
@@ -173,7 +174,7 @@ export function SearchBox({ autoFocus, onNavigate, className, variant = 'header'
                 {matchedCats.length > 0 && (
                   <div className="flex flex-wrap gap-2 px-2 pb-2 pt-1">
                     {matchedCats.map((c) => (
-                      <button key={c.id} type="button" onClick={() => go(`/categorias/${c.slug}`, q)} className="rounded-full bg-peach-100 px-3 py-1.5 text-xs font-bold text-brand-800 hover:bg-peach-200">
+                      <button key={c.id} type="button" onClick={() => go(shopUrl(c.slug), q)} className="rounded-full bg-peach-100 px-3 py-1.5 text-xs font-bold text-brand-800 hover:bg-peach-200">
                         Categoria: {c.name}
                       </button>
                     ))}

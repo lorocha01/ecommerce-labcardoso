@@ -13,6 +13,7 @@ import { Steps } from '@/components/checkout/Steps'
 import { formatCurrency, plural } from '@/lib/format'
 import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { MAX_QTY } from '@/store'
+import { shopUrl } from '@/lib/routes'
 
 export default function Cart() {
   useDocumentTitle('Carrinho')
@@ -60,8 +61,8 @@ export default function Cart() {
               description="Explore o catálogo, consulte o preparo de cada exame e adicione os que você precisa realizar."
               action={
                 <>
-                  <Button to="/exames">Ver exames</Button>
-                  <Button to="/categorias/check-ups" variant="secondary">
+                  <Button to="/exames">Comprar exames</Button>
+                  <Button to={shopUrl('check-ups')} variant="secondary">
                     Conhecer check-ups
                   </Button>
                 </>

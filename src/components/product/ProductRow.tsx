@@ -8,6 +8,7 @@ import { DemoTag } from '@/components/ui/Badge'
 import { ProductArt } from './ProductArt'
 import { AddToCartButton } from './AddToCartButton'
 import { FavoriteButton } from './FavoriteButton'
+import { shopCategoryName } from '@/lib/routes'
 
 export function ProductRow({ product }: { product: Product }) {
   const category = useCategoryMap()[product.categoryId]
@@ -18,7 +19,7 @@ export function ProductRow({ product }: { product: Product }) {
         <ProductArt icon={product.icon} tone={product.tone} imageUrl={product.imageUrl} alt="" size="sm" className="aspect-[16/9] w-full transition-transform duration-500 group-hover:scale-105 sm:aspect-square" />
       </Link>
       <div className="min-w-0 flex-1 px-1">
-        <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-brand-700">{category?.name}</span>
+        <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-brand-700">{category && shopCategoryName(category)}</span>
         <h3 className="mt-1 text-lg font-bold text-ink-900">
           <Link to={url} className="hover:text-brand-700">
             {product.name}

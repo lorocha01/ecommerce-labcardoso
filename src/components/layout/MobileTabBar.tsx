@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Heart, Home, LayoutGrid, ShoppingBag, User } from 'lucide-react'
+import { FileCheck2, Home, LayoutGrid, ShoppingBag, User } from 'lucide-react'
 import { useCart } from '@/store/hooks'
 import { cn } from '@/lib/utils'
 
@@ -8,8 +8,8 @@ export function MobileTabBar() {
   const { count } = useCart()
   const items = [
     { to: '/', label: 'Início', icon: Home, end: true },
-    { to: '/exames', label: 'Exames', icon: LayoutGrid },
-    { to: '/favoritos', label: 'Favoritos', icon: Heart },
+    { to: '/exames', label: 'Comprar', icon: LayoutGrid },
+    { to: '/resultados', label: 'Resultados', icon: FileCheck2 },
     { to: '/minha-conta', label: 'Conta', icon: User },
     { to: '/carrinho', label: 'Carrinho', icon: ShoppingBag, badge: count },
   ]

@@ -6,6 +6,7 @@ import { useCategoryMap } from '@/store/hooks'
 import { formatCurrency } from '@/lib/format'
 import { DemoTag } from '@/components/ui/Badge'
 import { cn } from '@/lib/utils'
+import { shopCategoryName } from '@/lib/routes'
 import { ProductArt } from './ProductArt'
 import { AddToCartButton } from './AddToCartButton'
 import { FavoriteButton } from './FavoriteButton'
@@ -35,7 +36,7 @@ export function ProductCard({ product, className, compact }: { product: Product;
       <FavoriteButton productId={product.id} name={product.name} className="absolute right-5 top-5 z-10" />
 
       <div className="flex flex-1 flex-col px-2 pb-1.5 pt-4">
-        <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-brand-700">{category?.name ?? 'Exame'}</span>
+        <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-brand-700">{category ? shopCategoryName(category) : 'Exame'}</span>
         <h3 className="mt-1.5 text-[17px] font-bold leading-snug text-ink-900">
           <Link to={url} className="after:absolute after:inset-0 after:rounded-[26px] focus-visible:outline-none">
             {product.name}

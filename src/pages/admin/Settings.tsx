@@ -95,10 +95,11 @@ export default function AdminSettings() {
             </div>
           </Panel>
 
-          <Panel title={<span className="inline-flex items-center gap-2"><Share2 className="h-4 w-4 text-brand-600" /> Redes sociais</span>}>
+          <Panel title={<span className="inline-flex items-center gap-2"><Share2 className="h-4 w-4 text-brand-600" /> Redes sociais e links</span>}>
             <div className="grid gap-4 sm:grid-cols-2">
               <Input label="Instagram" name="instagram" value={f.social.instagram} onChange={(e) => set('social', { ...f.social, instagram: e.target.value })} />
               <Input label="Facebook" name="facebook" value={f.social.facebook} onChange={(e) => set('social', { ...f.social, facebook: e.target.value })} />
+              <Input wrapClassName="sm:col-span-2" label="Portal de resultados de exames" name="resultsUrl" value={f.resultsUrl} onChange={(e) => set('resultsUrl', e.target.value)} hint="Endereço aberto pelo botão “Acessar meus resultados”." />
             </div>
           </Panel>
 

@@ -38,6 +38,7 @@ import { ProductCard } from '@/components/product/ProductCard'
 import { TONES } from '@/components/product/ProductArt'
 import { InlineVideoFeature } from '@/components/video/VideoShowcase'
 import { cn, telLink, whatsappLink } from '@/lib/utils'
+import { shopUrl } from '@/lib/routes'
 
 /* ───────────────────────────── Faixa de confiança */
 export function TrustStrip() {
@@ -83,7 +84,7 @@ export function CategoriesSection() {
           description="Navegue pelos principais grupos de exames e encontre rapidamente o que o seu médico solicitou."
           action={
             <Link to="/exames" className={buttonClass('secondary', 'md')}>
-              Ver catálogo completo <ArrowRight className="h-4 w-4" />
+              Comprar exames <ArrowRight className="h-4 w-4" />
             </Link>
           }
         />
@@ -95,7 +96,7 @@ export function CategoriesSection() {
             return (
               <Reveal key={c.id} delay={(i % 5) * 0.05} className={cn(featured && 'col-span-2 row-span-2 sm:col-span-1 lg:col-span-1')}>
                 <Link
-                  to={`/categorias/${c.slug}`}
+                  to={shopUrl(c.slug)}
                   className={cn(
                     'group relative flex h-full flex-col justify-between overflow-hidden rounded-[26px] border p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-card sm:p-5',
                     featured ? 'min-h-[220px] border-transparent bg-gradient-to-br text-white sm:min-h-0 ' + tone.bg : 'min-h-[150px] border-ink-100 bg-white',

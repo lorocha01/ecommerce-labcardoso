@@ -10,6 +10,7 @@ import {
   LocationSection,
   TrustStrip,
 } from '@/components/home/Sections'
+import { ResultsPanel } from '@/components/results/ResultsPanel'
 import { VideoShowcase } from '@/components/video/VideoShowcase'
 import { useDocumentTitle } from '@/lib/useDocumentTitle'
 
@@ -19,6 +20,9 @@ export default function Home() {
     <>
       <Hero />
       <TrustStrip />
+      <div className="container pt-12 lg:pt-16">
+        <ResultsPanel />
+      </div>
       <CategoriesSection />
       <FeaturedSection />
       <Differentials />

@@ -26,7 +26,7 @@ export const banners: Banner[] = [
       'Combinações práticas para acompanhar a saúde com o seu médico. Escolha, simule a compra e leve o pedido no dia da coleta.',
     art: 'checkup',
     primaryText: 'Ver check-ups',
-    primaryLink: '/categorias/check-ups',
+    primaryLink: '/exames?categoria=check-ups',
     secondaryText: 'Como funciona',
     secondaryLink: '/faq',
     active: true,

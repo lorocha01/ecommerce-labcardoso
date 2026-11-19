@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useParams, useSearchParams } from 'react-router-dom'
 import { Toaster, toast } from 'sonner'
 import { storageStatus, useStore } from '@/store'
 import { StoreLayout } from '@/components/layout/StoreLayout'
@@ -19,6 +19,8 @@ import Contact from '@/pages/Contact'
 import Faq from '@/pages/Faq'
 import { Privacy, Terms } from '@/pages/Legal'
 import NotFound from '@/pages/NotFound'
+import Results from '@/pages/Results'
+import { shopUrl } from '@/lib/routes'
 
 // Painel administrativo carregado sob demanda (chunk separado)
 const AdminLogin = lazy(() => import('@/pages/admin/Login'))
@@ -59,7 +61,9 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="exames" element={<Catalog />} />
             <Route path="exames/:id" element={<ProductDetail />} />
-            <Route path="categorias/:slug" element={<Catalog />} />
+            {/* Páginas de categoria antigas → página única "Comprar exames" com o filtro aplicado */}
+            <Route path="categorias/:slug" element={<CategoryRedirect />} />
+            <Route path="resultados" element={<Results />} />
             <Route path="carrinho" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="minha-conta" element={<Account />} />
@@ -105,4 +109,10 @@ export default function App() {
       />
     </>
   )
+}
+
+function CategoryRedirect() {
+  const { slug } = useParams()
+  const [params] = useSearchParams()
+  return <Navigate to={shopUrl(slug, params.get('q') ?? undefined)} replace />
 }

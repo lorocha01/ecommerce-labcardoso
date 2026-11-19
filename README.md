@@ -28,7 +28,9 @@ Fontes (Fraunces + Plus Jakarta Sans) empacotadas localmente via `@fontsource` �
 
 ## Rotas
 
-**Loja:** `/` · `/exames` · `/exames/:id` · `/categorias/:slug` · `/carrinho` · `/checkout` · `/minha-conta` · `/pedidos` · `/pedidos/:id` · `/favoritos` · `/sobre` · `/contato` · `/faq` · `/politica-de-privacidade` · `/termos-de-uso`
+**Loja:** `/` · `/exames` (Comprar exames: todos os exames, check-ups e pacotes; filtro `?categoria=<slug>` e busca `?q=`) · `/exames/:id` · `/resultados` · `/carrinho` · `/checkout` · `/minha-conta` · `/pedidos` · `/pedidos/:id` · `/favoritos` · `/sobre` · `/contato` · `/faq` · `/politica-de-privacidade` · `/termos-de-uso`
+
+Links antigos `/categorias/:slug` redirecionam para `/exames?categoria=<slug>`. O botão **Acessar meus resultados** abre o portal oficial do laboratório, configurável em *Painel → Configurações → Redes sociais e links*.
 
 **Admin:** `/admin/login` · `/admin` · `/admin/pedidos` · `/admin/pedidos/:id` · `/admin/exames` · `/admin/categorias` · `/admin/clientes` · `/admin/financeiro` · `/admin/banners` · `/admin/atividades` · `/admin/configuracoes`
 

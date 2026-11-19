@@ -175,6 +175,8 @@ export interface StoreSettings {
   about: string
   mission: string
   social: SocialLinks
+  /** Portal oficial de consulta de resultados (link externo). */
+  resultsUrl: string
   announcement: string
   announcementActive: boolean
   homeCategoriesTitle: string
